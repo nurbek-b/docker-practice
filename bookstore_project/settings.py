@@ -20,10 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'rzu7b*@4&-&c$#)6$j#0omfa_#f+9@*i^(9=hu&19+mj0w4p*w'
+SECRET_KEY = os.environ.get('NEW_SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get('DEBUG', default=0))
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
 
     'pages.apps.PagesConfig',
     'users',
+    'books.apps.BooksConfig',
 ]
 
 MIDDLEWARE = [
@@ -152,6 +155,8 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+DEFAULT_FROM_EMAIL = 'admin@djangobookstore.com'
+
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
@@ -159,6 +164,6 @@ ACCOUNT_UNIQUE_EMAIL = True
 
 ACCOUNT_SESSION_REMEMBER = True
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
